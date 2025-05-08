@@ -1,0 +1,236 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ranking Corrigido Final</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(270deg, #1b1f3a, #00498E, #1b1f3a);
+      background-size: 600% 600%;
+      animation: gradientBackground 15s ease infinite;
+      color: white;
+      text-align: center;
+    }
+    @keyframes gradientBackground {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    header {
+      padding: 20px;
+      background-color: rgba(0,0,0,0.5);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .slide { display: none; }
+    .container {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      padding: 20px;
+    }
+    .card, .consultor-card {
+      background-color: rgba(255,255,255,0.05);
+      border-radius: 10px;
+      padding: 20px;
+      width: 250px;
+      text-align: center;
+    }
+    .card img, .consultor-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: contain;
+      border-radius: 10px;
+      background-color: transparent;
+    }
+    .total {
+      font-size: 20px;
+      margin-top: 10px;
+      color: cyan;
+    }
+    .slider-container {
+      overflow: hidden;
+      position: relative;
+      height: 280px;
+    }
+    .slider-track {
+      display: flex;
+      animation: scrollSlider 40s linear infinite;
+    }
+    .slider-track.reverse {
+      animation-direction: reverse;
+    }
+    .consultor-card {
+      flex: 0 0 auto;
+      width: 220px;
+      margin: 0 15px;
+    }
+    @keyframes scrollSlider {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    table {
+      width: 85%;
+      margin: 20px auto;
+      border-collapse: collapse;
+      font-size: 15px;
+    }
+    th, td {
+      padding: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    thead {
+      background-color: rgba(0, 73, 142, 0.85);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h2>Ranking de Consultores</h2>
+    <button onclick="toggleFullscreen()">🔳 Tela Cheia</button>
+  </header>
+
+  <div class="slide" id="slide1">
+    <h1>Top 3 Internos</h1>
+    <div class="container" id="top3Interno"></div>
+    <table>
+      <thead><tr><th>Consultor</th><th>Presencial</th><th>EAD</th><th>Semi</th><th>Total</th></tr></thead>
+      <tbody id="tabelaTop3Interno"></tbody>
+    </table>
+  </div>
+
+  <div class="slide" id="slide2">
+    <h1>Top 3 Externos</h1>
+    <div class="container" id="top3Externo"></div>
+    <table>
+      <thead><tr><th>Consultor</th><th>Presencial</th><th>EAD</th><th>Semi</th><th>Total</th></tr></thead>
+      <tbody id="tabelaTop3Externo"></tbody>
+    </table>
+  </div>
+
+  <div class="slide" id="slide3">
+    <h1>Todos os Consultores</h1>
+    <div class="slider-container"><div class="slider-track" id="linha1"></div></div>
+    <div class="slider-container"><div class="slider-track reverse" id="linha2"></div></div>
+  </div>
+
+  <div class="slide" id="slide4">
+    <h1>Coordenadores</h1>
+    <div class="container">
+      <div class="card">
+        <div class="nome">Tom</div>
+        <img src="imagens/tom.png" alt="Tom" onerror="this.src='imagens/default.png'">
+        <div class="total">Coordenador Externo</div>
+      </div>
+      <div class="card">
+        <div class="nome">Mary</div>
+        <img src="imagens/mary.png" alt="Mary" onerror="this.src='imagens/default.png'">
+        <div class="total">Coordenadora Interna</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide" id="slide5">
+    <h1>Ranking Geral</h1>
+    <table>
+      <thead><tr><th>Consultor</th><th>Presencial</th><th>EAD</th><th>Semi</th><th>Total</th></tr></thead>
+      <tbody id="rankingTable"></tbody>
+    </table>
+  </div>
+
+  <script>
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+      } else {
+        document.exitFullscreen();
+      }
+    }
+
+    function normalizarNome(nome) {
+      return nome.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/\s+/g, '').replace(/[^a-z]/g, '');
+    }
+
+    async function carregarDados() {
+      const res = await fetch("https://opensheet.elk.sh/12fP3mNTB1WwRE4Y41Xjpx9TzdfhXaVrZ5B-XsO9jgEc/base");
+      const dados = await res.json();
+
+      const internos = dados.filter(d => d["Tipo"] === "Interno").sort((a,b) => b["TOTAL GERAL"] - a["TOTAL GERAL"]).slice(0, 3);
+      const externos = dados.filter(d => d["Tipo"] === "Externo").sort((a,b) => b["TOTAL GERAL"] - a["TOTAL GERAL"]).slice(0, 3);
+
+      document.getElementById("top3Interno").innerHTML = internos.map((d, i) => criarCardTop3(d, i+1)).join('');
+      document.getElementById("top3Externo").innerHTML = externos.map((d, i) => criarCardTop3(d, i+1)).join('');
+
+      document.getElementById("tabelaTop3Interno").innerHTML = internos.map(criarLinha).join('');
+      document.getElementById("tabelaTop3Externo").innerHTML = externos.map(criarLinha).join('');
+
+      const metade = Math.ceil(dados.length / 2);
+      const linha1 = dados.slice(0, metade).map(criarCardSimples).join('');
+      const linha2 = dados.slice(metade).map(criarCardSimples).join('');
+      document.getElementById("linha1").innerHTML = linha1 + linha1;
+      document.getElementById("linha2").innerHTML = linha2 + linha2;
+
+      document.getElementById("rankingTable").innerHTML = dados.map(criarLinha).join('');
+    }
+
+    function criarCardTop3(d, pos) {
+      const nome = d["Consultores"];
+      const total = d["TOTAL GERAL"];
+      const nomeImg = normalizarNome(nome);
+      return `
+        <div class="card">
+          <div><strong>${pos}º Lugar</strong></div>
+          <img src="imagens/${nomeImg}.png" alt="${nome}" onerror="this.src='imagens/default.png'">
+          <div class="nome">${nome}</div>
+          <div class="total">Total: ${total}</div>
+        </div>
+      `;
+    }
+
+    function criarCardSimples(d) {
+      const nome = d["Consultores"];
+      const total = d["TOTAL GERAL"];
+      const nomeImg = normalizarNome(nome);
+      return `
+        <div class="consultor-card">
+          <img src="imagens/${nomeImg}.png" alt="${nome}" onerror="this.src='imagens/default.png'">
+          <div class="nome">${nome}</div>
+          <div class="total">Total: ${total}</div>
+        </div>
+      `;
+    }
+
+    function criarLinha(d) {
+      return `
+        <tr>
+          <td>${d["Consultores"]}</td>
+          <td>${d["Matriculas Presencial"]}</td>
+          <td>${d["Matriculas Ead"]}</td>
+          <td>${d["Matriculas Semi-Presencial"]}</td>
+          <td>${d["TOTAL GERAL"]}</td>
+        </tr>
+      `;
+    }
+
+    let slideAtual = 1;
+    function alternarSlide() {
+      for (let i = 1; i <= 5; i++) {
+        document.getElementById("slide" + i).style.display = (i === slideAtual ? "block" : "none");
+      }
+      slideAtual = (slideAtual % 5) + 1;
+      setTimeout(alternarSlide, 10000);
+    }
+
+    window.onload = () => {
+      carregarDados();
+      alternarSlide();
+    }
+  </script>
+</body>
+</html>
