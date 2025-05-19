@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -86,7 +85,6 @@
       background-color: rgba(0, 73, 142, 0.85);
     }
 
-    /* Popup */
     .popup {
       display: none;
       position: fixed;
@@ -139,7 +137,7 @@
     const vendasAnteriores = {};
 
     function normalizarNome(nome) {
-      return nome.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/\s+/g, '').replace(/[^a-z]/g, '');
+      return nome.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, '').replace(/[^a-z]/g, '');
     }
 
     function criarCard(d, pos) {
@@ -147,7 +145,8 @@
       const total = d["TOTAL GERAL"];
       const nomeImg = normalizarNome(nome);
       const posTag = pos ? `<div><strong>${pos}º Lugar</strong></div>` : '';
-      return `<div class="card">${posTag}<img src="imagens/${nomeImg}.png" onerror="this.src='imagens/default.png'"><div class="nome">${nome}</div><div class="total">Total: ${total}</div></div>`;
+      const className = pos === 1 ? 'top1' : pos === 2 ? 'top2' : 'top3';
+      return `<div class="card ${className}">${posTag}<img src="imagens/${nomeImg}.png" onerror="this.src='imagens/default.png'"><div class="nome">${nome}</div><div class="total">Total: ${total}</div></div>`;
     }
 
     function criarCardSimples(d) {
@@ -194,7 +193,10 @@
       document.getElementById("linha1").innerHTML = linha1 + linha1;
       document.getElementById("linha2").innerHTML = linha2 + linha2;
 
-      document.getElementById("rankingTable").innerHTML = dados.map(criarLinha).join('');
+      document.getElementById("rankingTable").innerHTML = [...dados]
+        .sort((a, b) => parseInt(b["TOTAL GERAL"] || 0) - parseInt(a["TOTAL GERAL"] || 0))
+        .map(criarLinha)
+        .join('');
 
       dados.forEach(d => {
         const nome = d["Consultores"];
