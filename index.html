@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+  <button onclick="habilitarAudio()" style="position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 10000; background-color: cyan; color: black; border: none; padding: 12px 24px; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer;">
+    🔊 Ativar Som
+  </button>
+  
+
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Ranking Corrigido</title>
@@ -223,6 +228,17 @@
       setInterval(carregarTudo, 30000);
       alternarSlide();
     }
+
+    function habilitarAudio() {
+      const audio = document.getElementById("aplausos");
+      audio.play().then(() => {
+        alert("Som ativado! Agora os aplausos funcionarão.");
+      }).catch(err => {
+        console.log("Erro ao ativar som:", err);
+        alert("O som não pôde ser ativado. Tente clicar novamente.");
+      });
+    }
+
   </script>
 </body>
 </html>
