@@ -1,247 +1,268 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  
+  
 
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Ranking Corrigido</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: #001f3f;
-      color: white;
-      text-align: center;
-    }
-    header {
-      background: #003366;
-      padding: 10px 20px;
-      display: flex;
-      justify-content: space-between;
-    }
-    .slide { display: none; }
-    .container {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 20px;
-      padding: 20px;
-    }
-    .card {
-      background-color: rgba(255,255,255,0.05);
-      border-radius: 10px;
-      padding: 20px;
-      width: 250px;
-      text-align: center;
-    }
-    .card img {
-      width: 100%;
-      height: 200px;
-      object-fit: contain;
-      border-radius: 10px;
-    }
-    .total {
-      font-size: 20px;
-      margin-top: 10px;
-      color: cyan;
-    }
-    .slider-container {
-      overflow: hidden;
-      position: relative;
-      height: 280px;
-    }
-    .slider-track {
-      display: flex;
-      animation: scrollSlider 40s linear infinite;
-    }
-    .slider-track img {
-      height: 200px;
-      width: auto;
-      object-fit: cover;
-      border-radius: 10px;
-    }
-    .slider-track.reverse {
-      animation-direction: reverse;
-    }
-    .consultor-card {
-      flex: 0 0 auto;
-      width: 220px;
-      margin: 0 15px;
-    }
-    @keyframes scrollSlider {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
-    }
-    table {
-      width: 85%;
-      margin: 20px auto;
-      border-collapse: collapse;
-      font-size: 15px;
-    }
-    th, td {
-      padding: 10px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-    thead {
-      background-color: rgba(0, 73, 142, 0.85);
-    }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ranking Corrigido</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #001f3f;
+      color: white;
+      text-align: center;
+    }
+    header {
+      background: #003366;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .slide { display: none; }
+    .container {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      padding: 20px;
+    }
+    .card {
+      background-color: rgba(255,255,255,0.05);
+      border-radius: 10px;
+      padding: 20px;
+      width: 250px;
+      text-align: center;
+    }
+    .card img {
+      width: 100%;
+      height: 200px;
+      object-fit: contain;
+      border-radius: 10px;
+    }
+    .total {
+      font-size: 20px;
+      margin-top: 10px;
+      color: cyan;
+    }
+    .slider-container {
+      overflow: hidden;
+      position: relative;
+      height: 280px;
+    }
+    .slider-track {
+      display: flex;
+      animation: scrollSlider 40s linear infinite;
+    }
+    .slider-track img {
+      height: 200px;
+      width: auto;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+    .slider-track.reverse {
+      animation-direction: reverse;
+    }
+    .consultor-card {
+      flex: 0 0 auto;
+      width: 220px;
+      margin: 0 15px;
+    }
+    @keyframes scrollSlider {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    table {
+      width: 85%;
+      margin: 20px auto;
+      border-collapse: collapse;
+      font-size: 15px;
+    }
+    th, td {
+      padding: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    thead {
+      background-color: rgba(0, 73, 142, 0.85);
+    }
 
-    .popup {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.85);
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-      flex-direction: column;
-    }
-    .popup img {
-      width: 200px;
-      border-radius: 16px;
-      margin-bottom: 20px;
-      object-fit: cover;
-      border: 4px solid cyan;
-    }
-    .popup .msg {
-      font-size: 24px;
-      color: cyan;
-      margin-bottom: 10px;
-    }
-    .popup .nome {
-      font-size: 32px;
-      font-weight: bold;
-    }
-  </style>
+    .popup {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.85);
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      flex-direction: column;
+    }
+    .popup img {
+      width: 200px;
+      border-radius: 16px;
+      margin-bottom: 20px;
+      object-fit: cover;
+      border: 4px solid cyan;
+    }
+    .popup .msg {
+      font-size: 24px;
+      color: cyan;
+      margin-bottom: 10px;
+    }
+    .popup .nome {
+      font-size: 32px;
+      font-weight: bold;
+    }
+  </style>
 
-  <button onclick="habilitarAudio()" style="position: fixed; top: 10px; left: 30%; transform: translateX(-50%); z-index: 10000; background-color: cyan; color: black; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer;">
-    🔊 Ativar Som
-  </button>
-  
-  
+  <button onclick="habilitarAudio()" style="position: fixed; top: 10px; left: 30%; transform: translateX(-50%); z-index: 10000; background-color: cyan; color: black; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer;">
+    🔊 Ativar Som
+  </button>
+  
+  
 </head>
 <body>
-  <header>
-    <h2>Ranking de Consultores</h2>
-    <button onclick="document.documentElement.requestFullscreen()">🔳 Tela Cheia</button>
-  </header>
+  <header>
+    <h2>Ranking de Consultores</h2>
+    <button onclick="document.documentElement.requestFullscreen()">🔳 Tela Cheia</button>
+  </header>
 
-  <div class="popup" id="popup">
-    <img id="popupImg" src="" alt="Consultor"/>
-    <div class="msg" id="popupMsg"></div>
-    <div class="nome" id="popupNome"></div>
-  </div>
+  <div class="popup" id="popup">
+    <img id="popupImg" src="" alt="Consultor"/>
+    <div class="msg" id="popupMsg"></div>
+    <div class="nome" id="popupNome"></div>
+  </div>
 
-  <audio id="aplausos" src="https://www.soundjay.com/human/sounds/applause-8.mp3" preload="auto"></audio>
+  <audio id="aplausos" src="https://www.soundjay.com/human/sounds/applause-8.mp3" preload="auto"></audio>
 
-  <div class="slide" id="slide1"><h1>Top 3 Internos</h1><div class="container" id="top3Interno"></div><table><thead><tr><th>Consultor</th><th>Presencial</th><th>EAD</th><th>Semi</th><th>Total</th></tr></thead><tbody id="tabelaTop3Interno"></tbody></table></div>
-  <div class="slide" id="slide2"><h1>Top 3 Externos</h1><div class="container" id="top3Externo"></div><table><thead><tr><th>Consultor</th><th>Presencial</th><th>EAD</th><th>Semi</th><th>Total</th></tr></thead><tbody id="tabelaTop3Externo"></tbody></table></div>
-  <div class="slide" id="slide3"><h1>Todos os Consultores</h1><div class="slider-container"><div class="slider-track" id="linha1"></div></div><div class="slider-container"><div class="slider-track reverse" id="linha2"></div></div></div>
-  <div class="slide" id="slide4"><h1>Coordenadores</h1><div class="container"><div class="card"><div class="nome">Tom</div><img src="imagens/tom.png" onerror="this.src='imagens/default.png'"><div class="total">Coordenador Externo</div></div><div class="card"><div class="nome">Mary</div><img src="imagens/mary.png" onerror="this.src='imagens/default.png'"><div class="total">Coordenadora Interna</div></div></div></div>
-  <div class="slide" id="slide5"><h1>Ranking Geral</h1><table><thead><tr><th>Consultor</th><th>Presencial</th><th>EAD</th><th>Semi</th><th>Total</th></tr></thead><tbody id="rankingTable"></tbody></table></div>
+  <div class="slide" id="slide1"><h1>Top 3 Internos</h1><div class="container" id="top3Interno"></div><table><thead><tr><th>Consultor</th><th>Presencial</th><th>EAD</th><th>Semi</th><th>Total</th></tr></thead><tbody id="tabelaTop3Interno"></tbody></table></div>
+  <div class="slide" id="slide2"><h1>Top 3 Externos</h1><div class="container" id="top3Externo"></div><table><thead><tr><th>Consultor</th><th>Presencial</th><th>EAD</th><th>Semi</th><th>Total</th></tr></thead><tbody id="tabelaTop3Externo"></tbody></table></div>
+  <div class="slide" id="slide3"><h1>Todos os Consultores</h1><div class="slider-container"><div class="slider-track" id="linha1"></div></div><div class="slider-container"><div class="slider-track reverse" id="linha2"></div></div></div>
+  <div class="slide" id="slide4"><h1>Supervisores</h1><div class="container">
+    <div class="card">
+      <div class="nome">Vanessa Raffaela</div>
+      <img src="imagens/vanessa_raffaela.png" onerror="this.src='imagens/default.png'">
+      <div class="total">Supervisora</div>
+    </div>
+    <div class="card">
+      <div class="nome">Juliana</div>
+      <img src="imagens/juliana.png" onerror="this.src='imagens/default.png'">
+      <div class="total">Supervisora</div>
+    </div>
+    <div class="card">
+      <div class="nome">Vanessa</div>
+      <img src="imagens/vanessa.png" onerror="this.src='imagens/default.png'">
+      <div class="total">Supervisora</div>
+    </div>
+    <div class="card">
+      <div class="nome">Erica</div>
+      <img src="imagens/erica.png" onerror="this.src='imagens/default.png'">
+      <div class="total">Supervisora</div>
+    </div>
+</div></div>
+  <div class="slide" id="slide5"><h1>Ranking Geral</h1><table><thead><tr><th>Consultor</th><th>Presencial</th><th>EAD</th><th>Semi</th><th>Total</th></tr></thead><tbody id="rankingTable"></tbody></table></div>
 
-  <script>
-    const vendasAnteriores = {};
+  <script>
+    const vendasAnteriores = {};
 
-    function normalizarNome(nome) {
-      return nome.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, '').replace(/[^a-z]/g, '');
-    }
+    function normalizarNome(nome) {
+      return nome.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, '').replace(/[^a-z]/g, '');
+    }
 
-    function criarCard(d, pos) {
-      const nome = d["Consultores"];
-      const total = d["TOTAL GERAL"];
-      const nomeImg = normalizarNome(nome);
-      const posTag = pos ? `<div><strong>${pos}º Lugar</strong></div>` : '';
-      const className = pos === 1 ? 'top1' : pos === 2 ? 'top2' : 'top3';
-      return `<div class="card ${className}">${posTag}<img src="imagens/${nomeImg}.png" onerror="this.src='imagens/default.png'"><div class="nome">${nome}</div><div class="total">Total: ${total}</div></div>`;
-    }
+    function criarCard(d, pos) {
+      const nome = d["Consultores"];
+      const total = d["TOTAL GERAL"];
+      const nomeImg = normalizarNome(nome);
+      const posTag = pos ? `<div><strong>${pos}º Lugar</strong></div>` : '';
+      const className = pos === 1 ? 'top1' : pos === 2 ? 'top2' : 'top3';
+      return `<div class="card ${className}">${posTag}<img src="imagens/${nomeImg}.png" onerror="this.src='imagens/default.png'"><div class="nome">${nome}</div><div class="total">Total: ${total}</div></div>`;
+    }
 
-    function criarCardSimples(d) {
-      const nome = d["Consultores"];
-      const total = d["TOTAL GERAL"];
-      const nomeImg = normalizarNome(nome);
-      return `<div class="consultor-card"><img src="imagens/${nomeImg}.png" onerror="this.src='imagens/default.png'"><div class="nome">${nome}</div><div class="total">Total: ${total}</div></div>`;
-    }
+    function criarCardSimples(d) {
+      const nome = d["Consultores"];
+      const total = d["TOTAL GERAL"];
+      const nomeImg = normalizarNome(nome);
+      return `<div class="consultor-card"><img src="imagens/${nomeImg}.png" onerror="this.src='imagens/default.png'"><div class="nome">${nome}</div><div class="total">Total: ${total}</div></div>`;
+    }
 
-    function criarLinha(d) {
-      return `<tr><td>${d["Consultores"]}</td><td>${d["Matriculas Presencial"]}</td><td>${d["Matriculas Ead"]}</td><td>${d["Matriculas Semi-Presencial"]}</td><td>${d["TOTAL GERAL"]}</td></tr>`;
-    }
+    function criarLinha(d) {
+      return `<tr><td>${d["Consultores"]}</td><td>${d["Matriculas Presencial"]}</td><td>${d["Matriculas Ead"]}</td><td>${d["Matriculas Semi-Presencial"]}</td><td>${d["TOTAL GERAL"]}</td></tr>`;
+    }
 
-    function mostrarPopup(nome, total) {
-      const popup = document.getElementById("popup");
-      const img = document.getElementById("popupImg");
-      const msg = document.getElementById("popupMsg");
-      const nomeEl = document.getElementById("popupNome");
-      const nomeImg = normalizarNome(nome);
+    function mostrarPopup(nome, total) {
+      const popup = document.getElementById("popup");
+      const img = document.getElementById("popupImg");
+      const msg = document.getElementById("popupMsg");
+      const nomeEl = document.getElementById("popupNome");
+      const nomeImg = normalizarNome(nome);
 
-      img.src = `imagens/${nomeImg}.png`;
-      msg.innerText = `Nova matrícula registrada! Total agora é ${total}`;
-      nomeEl.innerText = nome;
+      img.src = `imagens/${nomeImg}.png`;
+      msg.innerText = `Nova matrícula registrada! Total agora é ${total}`;
+      nomeEl.innerText = nome;
 
-      document.getElementById("aplausos").play();
-      popup.style.display = "flex";
-      setTimeout(() => popup.style.display = "none", 30000);
-    }
+      document.getElementById("aplausos").play();
+      popup.style.display = "flex";
+      setTimeout(() => popup.style.display = "none", 30000);
+    }
 
-    async function carregarTudo() {
-      const res = await fetch("https://opensheet.elk.sh/12fP3mNTB1WwRE4Y41Xjpx9TzdfhXaVrZ5B-XsO9jgEc/base");
-      const dados = await res.json();
+    async function carregarTudo() {
+      const res = await fetch("https://opensheet.elk.sh/12fP3mNTB1WwRE4Y41Xjpx9TzdfhXaVrZ5B-XsO9jgEc/base");
+      const dados = await res.json();
 
-      const internos = dados.filter(d => d["Tipo"] === "Interno").sort((a,b) => b["TOTAL GERAL"] - a["TOTAL GERAL"]);
-      const externos = dados.filter(d => d["Tipo"] === "Externo").sort((a,b) => b["TOTAL GERAL"] - a["TOTAL GERAL"]);
+      const internos = dados.filter(d => d["Tipo"] === "Interno").sort((a,b) => b["TOTAL GERAL"] - a["TOTAL GERAL"]);
+      const externos = dados.filter(d => d["Tipo"] === "Externo").sort((a,b) => b["TOTAL GERAL"] - a["TOTAL GERAL"]);
 
-      document.getElementById("top3Interno").innerHTML = internos.slice(0, 3).map((d,i) => criarCard(d, i+1)).join('');
-      document.getElementById("tabelaTop3Interno").innerHTML = internos.slice(0, 3).map(criarLinha).join('');
-      document.getElementById("top3Externo").innerHTML = externos.slice(0, 3).map((d,i) => criarCard(d, i+1)).join('');
-      document.getElementById("tabelaTop3Externo").innerHTML = externos.slice(0, 3).map(criarLinha).join('');
+      document.getElementById("top3Interno").innerHTML = internos.slice(0, 3).map((d,i) => criarCard(d, i+1)).join('');
+      document.getElementById("tabelaTop3Interno").innerHTML = internos.slice(0, 3).map(criarLinha).join('');
+      document.getElementById("top3Externo").innerHTML = externos.slice(0, 3).map((d,i) => criarCard(d, i+1)).join('');
+      document.getElementById("tabelaTop3Externo").innerHTML = externos.slice(0, 3).map(criarLinha).join('');
 
-      const linha1 = dados.slice(0, Math.ceil(dados.length / 2)).map(criarCardSimples).join('');
-      const linha2 = dados.slice(Math.ceil(dados.length / 2)).map(criarCardSimples).join('');
-      document.getElementById("linha1").innerHTML = linha1 + linha1;
-      document.getElementById("linha2").innerHTML = linha2 + linha2;
+      const linha1 = dados.slice(0, Math.ceil(dados.length / 2)).map(criarCardSimples).join('');
+      const linha2 = dados.slice(Math.ceil(dados.length / 2)).map(criarCardSimples).join('');
+      document.getElementById("linha1").innerHTML = linha1 + linha1;
+      document.getElementById("linha2").innerHTML = linha2 + linha2;
 
-      document.getElementById("rankingTable").innerHTML = [...dados]
-        .sort((a, b) => parseInt(b["TOTAL GERAL"] || 0) - parseInt(a["TOTAL GERAL"] || 0))
-        .map(criarLinha)
-        .join('');
+      document.getElementById("rankingTable").innerHTML = [...dados]
+        .sort((a, b) => parseInt(b["TOTAL GERAL"] || 0) - parseInt(a["TOTAL GERAL"] || 0))
+        .map(criarLinha)
+        .join('');
 
-      dados.forEach(d => {
-        const nome = d["Consultores"];
-        const totalAtual = parseInt(d["TOTAL GERAL"]) || 0;
-        const totalAntigo = vendasAnteriores[nome];
-        if (totalAntigo !== undefined && totalAtual > totalAntigo) {
-          mostrarPopup(nome, totalAtual);
-        }
-        vendasAnteriores[nome] = totalAtual;
-      });
-    }
+      dados.forEach(d => {
+        const nome = d["Consultores"];
+        const totalAtual = parseInt(d["TOTAL GERAL"]) || 0;
+        const totalAntigo = vendasAnteriores[nome];
+        if (totalAntigo !== undefined && totalAtual > totalAntigo) {
+          mostrarPopup(nome, totalAtual);
+        }
+        vendasAnteriores[nome] = totalAtual;
+      });
+    }
 
-    let slideAtual = 1;
-    function alternarSlide() {
-      for (let i = 1; i <= 5; i++) {
-        document.getElementById("slide" + i).style.display = (i === slideAtual ? "block" : "none");
-      }
-      slideAtual = (slideAtual % 5) + 1;
-      setTimeout(alternarSlide, 10000);
-    }
+    let slideAtual = 1;
+    function alternarSlide() {
+      for (let i = 1; i <= 5; i++) {
+        document.getElementById("slide" + i).style.display = (i === slideAtual ? "block" : "none");
+      }
+      slideAtual = (slideAtual % 5) + 1;
+      setTimeout(alternarSlide, 10000);
+    }
 
-    window.onload = () => {
-      carregarTudo();
-      setInterval(carregarTudo, 30000);
-      alternarSlide();
-    }
+    window.onload = () => {
+      carregarTudo();
+      setInterval(carregarTudo, 30000);
+      alternarSlide();
+    }
 
-    function habilitarAudio() {
-      const audio = document.getElementById("aplausos");
-      audio.play().then(() => {
-        alert("Som ativado! Agora os aplausos funcionarão.");
-      }).catch(err => {
-        console.log("Erro ao ativar som:", err);
-        alert("O som não pôde ser ativado. Tente clicar novamente.");
-      });
-    }
+    function habilitarAudio() {
+      const audio = document.getElementById("aplausos");
+      audio.play().then(() => {
+        alert("Som ativado! Agora os aplausos funcionarão.");
+      }).catch(err => {
+        console.log("Erro ao ativar som:", err);
+        alert("O som não pôde ser ativado. Tente clicar novamente.");
+      });
+    }
 
-  </script>
+  </script>
 </body>
 </html>
